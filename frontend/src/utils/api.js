@@ -2,14 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Constants from 'expo-constants';
 
-// Dynamically get the IP address of the machine running the Expo bundler / local backend
-const getApiUrl = () => {
-  const debuggerHost = Constants.expoConfig?.hostUri;
-  const ip = debuggerHost ? debuggerHost.split(':')[0] : '192.168.29.16';
-  return `http://${ip}:5000/api`;
-};
-
-const API_URL = getApiUrl();
+// Backend API URL on Render
+const API_URL = 'https://expensive-tracker-app.onrender.com/api';
 
 const getAuthToken = async () => {
   try {
