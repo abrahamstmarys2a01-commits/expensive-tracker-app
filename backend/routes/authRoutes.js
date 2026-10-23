@@ -4,9 +4,11 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkey_spendwise_2026';
+
 // Generate JWT
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, JWT_SECRET, {
     expiresIn: '30d',
   });
 };
