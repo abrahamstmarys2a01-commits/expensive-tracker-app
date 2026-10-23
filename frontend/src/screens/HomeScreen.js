@@ -163,7 +163,7 @@ const HomeScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('AddExpense')}
         activeOpacity={0.8}
       >
-        <Plus color={colors.background} size={24} />
+        <Plus color={colors.background} size={20} strokeWidth={2.5} />
       </TouchableOpacity>
     </Animated.View>
   );
@@ -277,15 +277,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 24,
     right: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    elevation: 4,
   }
 });
 
