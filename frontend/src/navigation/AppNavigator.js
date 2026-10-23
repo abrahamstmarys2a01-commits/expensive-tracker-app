@@ -55,7 +55,7 @@ const TabNavigator = () => {
         }
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Dashboard' }} />
+      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Dashboard', headerShown: false }} />
       <Tab.Screen name="HistoryTab" component={ExpensesScreen} options={{ title: 'History' }} />
       <Tab.Screen name="Statistics" component={StatisticsScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Animated, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Plus, User } from 'lucide-react-native';
 import { getExpenses } from '../utils/api';
 import { calculateThisMonthTotal, calculateTodayTotal, getExpensesByCategory } from '../utils/calculations';
@@ -11,6 +12,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 
 const HomeScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const { user, logout } = useAuth();
   const [expenses, setExpenses] = useState([]);
@@ -84,8 +86,12 @@ const HomeScreen = ({ navigation }) => {
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: colors.background }]}>
       <ScrollView 
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent, 
+          { paddingTop: insets.top > 0 ? insets.top + 8 : 16 }
+        ]}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
           <View style={styles.headerTextContainer}>
@@ -187,14 +193,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
-    marginTop: 10,
+    marginBottom: 20,
+    marginTop: 4,
   },
   headerTextContainer: {
     flex: 1,
