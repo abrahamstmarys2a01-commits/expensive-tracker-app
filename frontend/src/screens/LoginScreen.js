@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { loginUser, registerUser } from '../utils/api';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 const LoginScreen = () => {
   const { login } = useAuth();
@@ -21,8 +22,9 @@ const LoginScreen = () => {
   
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('admin123');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -108,18 +110,35 @@ const LoginScreen = () => {
         />
 
         <Text style={[styles.label, { color: colors.text }]}>Password</Text>
-        <TextInput
-          style={[
-            styles.input, 
-            { backgroundColor: colors.surface, borderColor: colors.border, color: colors.text }
-          ]}
-          placeholder="Password"
-          placeholderTextColor={colors.textSecondary}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          autoCapitalize="none"
-        />
+        <View style={[
+          styles.passwordContainer, 
+          { backgroundColor: colors.surface, borderColor: colors.border }
+        ]}>
+          <TextInput
+            style={[
+              styles.passwordInput, 
+              { color: colors.text }
+            ]}
+            placeholder="Password"
+            placeholderTextColor={colors.textSecondary}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity 
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeButton}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            activeOpacity={0.7}
+          >
+            {showPassword ? (
+              <EyeOff size={22} color={colors.textSecondary} />
+            ) : (
+              <Eye size={22} color={colors.textSecondary} />
+            )}
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity 
           style={[styles.loginButton, { backgroundColor: colors.primary, shadowColor: colors.primary }]} 
@@ -188,6 +207,23 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 16,
     marginBottom: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 16,
+    marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 16,
+    fontSize: 16,
+  },
+  eyeButton: {
+    padding: 6,
+    marginLeft: 8,
   },
   loginButton: {
     borderRadius: 16,
