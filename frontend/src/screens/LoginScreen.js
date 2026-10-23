@@ -34,8 +34,8 @@ const LoginScreen = () => {
   
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 

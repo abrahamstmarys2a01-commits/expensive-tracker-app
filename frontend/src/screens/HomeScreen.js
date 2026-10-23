@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Animated } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Animated, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Plus } from 'lucide-react-native';
+import { Plus, User } from 'lucide-react-native';
 import { getExpenses } from '../utils/api';
 import { calculateThisMonthTotal, calculateTodayTotal, getExpensesByCategory } from '../utils/calculations';
 import SummaryCard from '../components/SummaryCard';
@@ -12,7 +12,7 @@ import { useAuth } from '../context/AuthContext';
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [thisMonthTotal, setThisMonthTotal] = useState(0);
   const [todayTotal, setTodayTotal] = useState(0);
@@ -88,8 +88,25 @@ const HomeScreen = ({ navigation }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={styles.header}>
-          <Text style={[styles.greeting, { color: colors.text }]}>{getGreeting()}</Text>
-          <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>Your spending overview</Text>
+          <View style={styles.headerTextContainer}>
+            <Text style={[styles.greeting, { color: colors.text }]}>{getGreeting()}</Text>
+            <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
+              {user?.name ? `Welcome, ${user.name}` : 'Your spending overview'}
+            </Text>
+          </View>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('Settings')}
+            style={[styles.candidateAvatar, { borderColor: colors.primary, backgroundColor: colors.surface }]}
+            activeOpacity={0.8}
+          >
+            {user?.profileImage ? (
+              <Image source={{ uri: user.profileImage }} style={styles.avatarImg} />
+            ) : (
+              <View style={[styles.avatarPlaceholder, { backgroundColor: colors.primary + '20' }]}>
+                <User size={22} color={colors.primary} />
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
 
         <View style={styles.summaryRow}>
@@ -173,8 +190,40 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 24,
     marginTop: 10,
+  },
+  headerTextContainer: {
+    flex: 1,
+    paddingRight: 12,
+  },
+  candidateAvatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 2,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+  },
+  avatarImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 24,
+  },
+  avatarPlaceholder: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   greeting: {
     fontSize: 24,
